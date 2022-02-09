@@ -1,0 +1,9 @@
+python/.idea
+kserve-kafka/.idea
+*.pyc
+.*
+!.gitignore
+!.gitmodules
+kserve-kafka/build/
+kserve-kafka/out/
+kserve-kafka/bin/

@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'io.freefair.lombok' version '5.3.3.3'
+    id 'com.google.cloud.tools.jib' version '3.1.4'
+}
+
+group 'com.example.kafkakserve'
+version '1.0-SNAPSHOT'
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+    maven { url = "https://packages.confluent.io/maven/" }
+
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation group: "io.confluent", name: "kafka-streams-avro-serde", version: "6.2.0"
+    implementation group: "com.bakdata.kafka", name: "streams-bootstrap", version: "1.9.3"
+    implementation group: "org.jsoup", name: "jsoup", version: "1.13.1"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.5'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.1'
+    implementation group: 'org.json', name: 'json', version: '20211205'
+    implementation group: 'com.bakdata.kafka', name : 'error-handling', version : '1.1.0'
+    implementation group: 'info.picocli', name : 'picocli', version : '4.6.1'
+    implementation group: 'io.github.resilience4j', name: 'resilience4j-retry', version: '1.7.1'
+    implementation("com.google.guava:guava:31.0.1-jre")
+
+    def fluentKafkaVersion = "2.4.2"
+    testImplementation group: "com.bakdata.fluent-kafka-streams-tests", name: "fluent-kafka-streams-tests-junit5", version: fluentKafkaVersion
+    testImplementation group: "com.bakdata.fluent-kafka-streams-tests", name: "schema-registry-mock-junit5", version: fluentKafkaVersion
+
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jib {
+    container {
+        mainClass = 'app.TranslateApp'
+    }
+    to{
+        image = 'us.gcr.io/gcp-bakdata-cluster/kserve-app-translate'
+    }
+}
+
+
+jib {
+    container {
+        mainClass = 'app.ProducerKafka'
+    }
+    to{
+        image = 'us.gcr.io/gcp-bakdata-cluster/kserve-app-producer'
+    }
+}

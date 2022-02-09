@@ -1,0 +1,11 @@
+{
+    "name": "argos-translation",
+    "implementation": "translation.translation_operator.TranslationAnnotatorArgos",
+    "parameters": {
+        "extra": {
+            "argos_translation_model": "translate-en_es-1_0.argosmodel",
+            "source_language_code": "en",
+            "target_language_code": "es"
+        }
+    }
+}
