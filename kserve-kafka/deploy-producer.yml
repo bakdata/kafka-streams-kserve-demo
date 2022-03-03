@@ -1,0 +1,32 @@
+  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-app-translation
+spec:
+  selector:
+    matchLabels:
+      app: kafka-app-translation
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kafka-app-translation
+    spec:
+      containers:
+        - name: kafka-app-translation
+          image:  us.gcr.io/gcp-bakdata-cluster/kserve-app-producer:latest
+          imagePullPolicy: Always
+          env:
+          - name: KAFKA_SERVER
+            value: "k8kafka-cp-kafka-0.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-1.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-2.k8kafka-cp-kafka-headless.infrastructure:9092"
+          - name: TOKEN
+            value: "AAAAAAAAAAAAAAAAAAAAAL4PZgEAAAAAD4JQrU6PtJr2kDwniM1DwRei0%2FY%3D7Dy5Dcdqamwper8f5RCkEXvLYKFvxfKUAq6YkfZFiVk3tmNFxl"
+          - name: SEARCH
+            value: "ucraine"
+          - name: MAX_RESULTS
+            value: "100"
+          - name: BIG_TEXT
+            value: "true"
+          - name: BIG_TEXT_RESULTS
+            value: "100000"

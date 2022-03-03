@@ -37,8 +37,6 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
     private final JsonPOJODeserializer<I> inputDeserializer = getInputDynamicDeserializer();
     private final JsonPOJOSerializer<O> outputSerializer = new JsonPOJOSerializer<O>();
     private final JsonPOJODeserializer<O> outputDeserializer = getOutputDynamicDeserializer();
-    @CommandLine.Option(names = "--service-url", required = true)
-    private String serviceUrl;
     @CommandLine.Option(names = "--model-name", required = true)
     private String modelName;
     @CommandLine.Option(names = "--inference-service", required = true)
@@ -64,7 +62,8 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
                 .to(this.getOutputTopic(), Produced.with(Serdes.ByteArray(), outputSerde));
 
         processedValues.flatMapValues(ProcessedValue::getErrors)
-                .foreach(this::test);
+                .mapValues(x -> x.createDeadLetter("Error in infer"))
+                .to(this.getErrorTopic());
     }
 
     @Override
@@ -124,7 +123,5 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
         return Serdes.serdeFrom(inputSerializer, inputDeserializer);
     }
 
-    private void test(byte[] x, ProcessingError<I> y) {
-        System.out.println(x + " " + y);
-    }
+
 }

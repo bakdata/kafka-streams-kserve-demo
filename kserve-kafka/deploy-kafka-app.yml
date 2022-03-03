@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: translator-kafka-app
+spec:
+  selector:
+    matchLabels:
+      app: translator-kafka-app
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: translator-kafka-app
+    spec:
+      containers:
+        - name: producer-translation
+          image:  us.gcr.io/gcp-bakdata-cluster/kserve-app-translate:latest
+          imagePullPolicy: Always
+          env:
+          - name: APP_BROKERS
+            value: "k8kafka-cp-kafka-0.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-1.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-2.k8kafka-cp-kafka-headless.infrastructure:9092"
+          - name: APP_INPUT_TOPICS
+            value: to-translate
+          - name: APP_OUTPUT_TOPIC
+            value: translated
+          - name: APP_ERROR_TOPIC
+            value: translated-error
+          - name: APP_BASE_ENDPOINT
+            value: ".kfserving-test.svc.cluster.local"
+          - name:  APP_INFERENCE_SERVICE
+            value: "translator"
+          - name: APP_MODEL_NAME
+            value: argos-translation
+          - name: APP_PROTOCOL_VERSION
+            value: V2
+          - name: APP_SCHEMA_REGISTRY_URL
+            value: "http://k8kafka-cp-schema-registry.infrastructure.svc.cluster.local:8081"
