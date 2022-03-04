@@ -35,3 +35,15 @@ spec:
             value: V2
           - name: APP_SCHEMA_REGISTRY_URL
             value: "http://k8kafka-cp-schema-registry.infrastructure.svc.cluster.local:8081"
+          - name: STREAMS_SESSION_TIMEOUT_MS
+            value: "60000"
+          - name: STREAMS_MAX_POLL_INTERVAL_MS
+            value: "300000"
+          - name: STREAMS_MAX_POLL_RECORDS
+            value: "100"
+          - name: STREAMS_TRANSACTION_TIMEOUT_MS
+            value: "300000"
+          - name: STREAMS_GROUP_INSTANCE_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
