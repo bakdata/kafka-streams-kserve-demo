@@ -1,17 +1,10 @@
-  
-apiVersion: apps/v1
-kind: Deployment
+
+apiVersion: batch/v1
+kind: Job
 metadata:
   name: kafka-app-translation
 spec:
-  selector:
-    matchLabels:
-      app: kafka-app-translation
-  replicas: 1
   template:
-    metadata:
-      labels:
-        app: kafka-app-translation
     spec:
       containers:
         - name: kafka-app-translation
@@ -23,10 +16,11 @@ spec:
           - name: TOKEN
             value: "AAAAAAAAAAAAAAAAAAAAAL4PZgEAAAAAD4JQrU6PtJr2kDwniM1DwRei0%2FY%3D7Dy5Dcdqamwper8f5RCkEXvLYKFvxfKUAq6YkfZFiVk3tmNFxl"
           - name: SEARCH
-            value: "ucraine"
+            value: "ukraine war is,putin says,biden says,google says,amazon says,elon musk says,bill gates says,jeff bezos says,europe is,facebook is,instagram is,kafka is,fastapi is,bugs are,crypto is,bitcoin is,ethereum is,doge is,medicine is,nato is,poland is,germany is,oil is,processors are,chips shortage,food shortage,electricity is,AI is,venezuela is,colombia elections,dollar is,euro is,peso is"
           - name: MAX_RESULTS
             value: "100"
           - name: BIG_TEXT
-            value: "true"
+            value: "false"
           - name: BIG_TEXT_RESULTS
             value: "100000"
+      restartPolicy: Never

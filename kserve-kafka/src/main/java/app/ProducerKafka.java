@@ -6,8 +6,6 @@ import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -24,10 +22,7 @@ public class ProducerKafka {
         String server = System.getenv().getOrDefault("KAFKA_SERVER", "");
         String token = System.getenv().getOrDefault("TOKEN", "");
         String maxResults = System.getenv().getOrDefault("MAX_RESULTS", "50");
-        String bigTextResults = System.getenv().getOrDefault("BIG_TEXT_RESULTS", "1000");
         String searchString = System.getenv().getOrDefault("SEARCH", "");
-        boolean isBigText = Boolean.parseBoolean(System.getenv().getOrDefault("BIG_TEXT", "false"));
-
 
         Properties props = new Properties();
 
@@ -41,69 +36,33 @@ public class ProducerKafka {
 
         Producer<String, TextTranslation> producer = new KafkaProducer<String, TextTranslation>(props);
 
-        if (isBigText) {
+        List<String> splitted = Arrays.asList(searchString.split(","));
+        for (String substring : splitted
+        ) {
+            TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
+                    .bearerToken(token)
+                    .build());
 
-            String file1 = Files.readString(Paths.get(ProducerKafka.class.getClassLoader()
-                    .getResource("1.txt")
-                    .toURI()));
+            TweetList result = twitterClient.searchTweets(substring,
+                    AdditionalParameters.builder()
+                            .recursiveCall(false)
+                            .maxResults(Integer.parseInt(maxResults)).build());
 
-            String file2 = Files.readString(Paths.get(ProducerKafka.class.getClassLoader()
-                    .getResource("2.txt")
-                    .toURI()));
+            for (int i = 0; i < result.getData().size(); i++) {
 
-            for (int i = 0; i < Integer.parseInt(bigTextResults); i++) {
+                TextTranslation toTranslate = TextTranslation
+                        .builder()
+                        .textToTranslate(result.getData().get(i).getText())
+                        .build();
 
-                TextTranslation toTranslate = null;
-
-                if (i % 2 == 0) {
-                    toTranslate = TextTranslation
-                            .builder()
-                            .textToTranslate(file1)
-                            .build();
-                } else {
-                    toTranslate = TextTranslation
-                            .builder()
-                            .textToTranslate(file2)
-                            .build();
-                }
                 producer.send(new ProducerRecord<>(topicName,
                         Integer.toString(i), toTranslate));
             }
-
-            System.out.println("Message sent successfully");
-            producer.close();
-
-        } else {
-
-            List<String> splitted = Arrays.asList(searchString.split(","));
-            for (String substring : splitted
-            ) {
-                TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
-                        .bearerToken(token)
-                        .build());
-
-                TweetList result = twitterClient.searchTweets(substring,
-                        AdditionalParameters.builder()
-                                .recursiveCall(false)
-                                .maxResults(Integer.parseInt(maxResults)).build());
-
-                for (int i = 0; i < result.getData().size(); i++) {
-
-                    TextTranslation toTranslate = TextTranslation
-                            .builder()
-                            .textToTranslate(result.getData().get(i).getText())
-                            .build();
-
-                    producer.send(new ProducerRecord<>(topicName,
-                            Integer.toString(i), toTranslate));
-                }
-            }
-
-            System.out.println("Message sent successfully");
-            producer.close();
         }
-    }
 
+        System.out.println("Messages sent successfully");
+        producer.close();
+    }
 }
 
 
