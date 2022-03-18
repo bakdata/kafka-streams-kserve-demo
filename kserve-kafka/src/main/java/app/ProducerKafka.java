@@ -64,5 +64,3 @@ public class ProducerKafka {
         producer.close();
     }
 }
-
-

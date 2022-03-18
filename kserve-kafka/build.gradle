@@ -32,23 +32,24 @@ dependencies {
     def fluentKafkaVersion = "2.4.2"
     testImplementation group: "com.bakdata.fluent-kafka-streams-tests", name: "fluent-kafka-streams-tests-junit5", version: fluentKafkaVersion
     testImplementation group: "com.bakdata.fluent-kafka-streams-tests", name: "schema-registry-mock-junit5", version: fluentKafkaVersion
-
-
-
 }
 
 test {
     useJUnitPlatform()
 }
 
-
-
-
-jib {
-    container {
-        mainClass = 'app.ProducerKafka'
+task jibProducer {
+    doFirst {
+        jib.container.mainClass = 'app.ProducerKafka'
+        jib.to.image = 'us.gcr.io/gcp-bakdata-cluster/kserve-app-producer'
     }
-    to{
-        image = 'us.gcr.io/gcp-bakdata-cluster/kserve-app-producer'
+    finalizedBy ':jib'
+}
+
+task jibTranslator {
+    doFirst {
+        jib.container.mainClass = 'app.TranslateApp'
+        jib.to.image = 'us.gcr.io/gcp-bakdata-cluster/kserve-app-translate'
     }
+    finalizedBy ':jib'
 }
