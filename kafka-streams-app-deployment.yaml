@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: translator-kafka-app
+  name: kafka-streams-app
 spec:
   selector:
     matchLabels:
-      app: translator-kafka-app
+      app: kafka-streams-app
   replicas: 1
   template:
     metadata:
       labels:
-        app: translator-kafka-app
+        app: kafka-streams-app
     spec:
       containers:
-        - name: producer-translation
-          image:  us.gcr.io/gcp-bakdata-cluster/kserve-app-translate:latest
+        - name: kafka-streams-app
+          image:  us.gcr.io/gcp-bakdata-cluster/kserve-demo-kafka-streams-app:latest
           imagePullPolicy: Always
           env:
           - name: APP_BROKERS

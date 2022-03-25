@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: kafka-app-translation
+  name: text-producer
 spec:
   template:
     spec:
       containers:
-        - name: kafka-app-translation
-          image:  us.gcr.io/gcp-bakdata-cluster/kserve-app-producer:latest
+        - name: text-producer
+          image:  us.gcr.io/gcp-bakdata-cluster/kserve-demo-text-producer:latest
           imagePullPolicy: Always
           env:
           - name: KAFKA_SERVER

@@ -1,7 +1,7 @@
 apiVersion: serving.kubeflow.org/v1beta1
 kind: InferenceService
 metadata:
-  name: translator
+  name: mlserver-translator
   annotations:
     autoscaling.knative.dev/target: "1"
 spec:
@@ -10,8 +10,8 @@ spec:
     maxReplicas: 5
     minReplicas: 0
     containers:
-      - name: translator
-        image: us.gcr.io/gcp-bakdata-cluster/kserve-translation-mlserver:latest
+      - name: mlserver-translator
+        image: us.gcr.io/gcp-bakdata-cluster/kserve-demo-mlserver-translator:latest
         env:
           - name: MLSERVER_MODEL_PARALLEL_WORKERS
             value: "0"

@@ -38,18 +38,18 @@ test {
     useJUnitPlatform()
 }
 
-task jibProducer {
+task jibTextProducer {
     doFirst {
-        jib.container.mainClass = 'app.ProducerKafka'
-        jib.to.image = 'us.gcr.io/gcp-bakdata-cluster/kserve-app-producer'
+        jib.container.mainClass = 'TextProducer'
+        jib.to.image = 'us.gcr.io/gcp-bakdata-cluster/kserve-demo-text-producer'
     }
     finalizedBy ':jib'
 }
 
-task jibTranslator {
+task jibApp {
     doFirst {
-        jib.container.mainClass = 'app.TranslateApp'
-        jib.to.image = 'us.gcr.io/gcp-bakdata-cluster/kserve-app-translate'
+        jib.container.mainClass = 'app.App'
+        jib.to.image = 'us.gcr.io/gcp-bakdata-cluster/kserve-demo-kafka-streams-app'
     }
     finalizedBy ':jib'
 }

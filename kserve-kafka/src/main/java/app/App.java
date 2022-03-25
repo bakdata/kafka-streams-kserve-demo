@@ -2,8 +2,7 @@ package app;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
+
 import predictv2.InferenceRequest;
 import predictv2.InferenceResponse;
 import predictv2.Parameters;
@@ -13,7 +12,7 @@ import types.TranslateResponse;
 import types.Translation;
 import types.TextTranslation;
 
-public class TranslateApp extends KafkaProcessorApp<TextTranslation,TranslateResponse, Translation>{
+public class App extends KafkaProcessorApp<TextTranslation,TranslateResponse, Translation>{
 
     @Override
     protected Translation process(TextTranslation input) {
@@ -40,7 +39,7 @@ public class TranslateApp extends KafkaProcessorApp<TextTranslation,TranslateRes
     }
 
     public static void main(String[] args) {
-        startApplication(new TranslateApp(), args);
+        startApplication(new App(), args);
     }
 
     @Override

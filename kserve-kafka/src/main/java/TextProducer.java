@@ -1,5 +1,3 @@
-package app;
-
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
@@ -14,7 +12,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import types.TextTranslation;
 
-public class ProducerKafka {
+public class TextProducer {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
 
@@ -34,7 +32,7 @@ public class ProducerKafka {
         props.put("value.serializer",
                 "serde.JsonPOJOSerializer");
 
-        Producer<String, TextTranslation> producer = new KafkaProducer<String, TextTranslation>(props);
+        org.apache.kafka.clients.producer.Producer<String, TextTranslation> producer = new org.apache.kafka.clients.producer.KafkaProducer<String, TextTranslation>(props);
 
         List<String> splitted = Arrays.asList(searchString.split(","));
         for (String substring : splitted
