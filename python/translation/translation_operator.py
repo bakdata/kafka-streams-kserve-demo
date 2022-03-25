@@ -2,30 +2,20 @@ from os import path
 from typing import List, Dict
 
 from argostranslate import package, translate
-from loguru import logger
 from mlserver import MLModel, types
-from mlserver.utils import get_model_uri
-
 
 
 class TranslationAnnotatorArgos(MLModel):
     async def load(self) -> bool:
-        model_dir_path = await get_model_uri(self._settings)
         model_uri: str = path.join(
-            model_dir_path,
+            "./argos-translation-annotator-en-es",
             self._settings.parameters.extra["argos_translation_model"])
-        source_language_code: str = self._settings.parameters.extra["source_language_code"]
-        target_language_code: str = self._settings.parameters.extra["target_language_code"]
 
-        logger.debug(f"Loading model from \"{model_uri}\"...")
         package.install_from_path(model_uri)
-        target_language: translate.Language
         [target_language] = list(filter(
-            lambda language: language.code == target_language_code, translate.get_installed_languages()))
-        self.model: translate.ITranslation
+            lambda language: language.code == "es", translate.get_installed_languages()))
         [self.model] = list(filter(
-            lambda translation: translation.from_lang.code == source_language_code, target_language.translations_to))
-        logger.info(f"Successfully loaded model {self.model} from \"{model_uri}\".")
+            lambda translation: translation.from_lang.code == "en", target_language.translations_to))
 
         return await super().load()
 
