@@ -1,9 +1,9 @@
-python/.idea
-kserve-kafka/.idea
+mlserver-translator/.idea
+kserve-demo/.idea
 *.pyc
 .*
 !.gitignore
 !.gitmodules
-kserve-kafka/build/
-kserve-kafka/out/
-kserve-kafka/bin/
+kserve-demo/build/
+kserve-demo/out/
+kserve-demo/bin/
