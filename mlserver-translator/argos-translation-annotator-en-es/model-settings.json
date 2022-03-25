@@ -1,9 +1,0 @@
-{
-    "name": "argos-translation-annotator-en-es",
-    "implementation": "translation.translation_operator.TranslationAnnotatorArgos",
-    "parameters": {
-        "extra": {
-            "argos_translation_model": "translate-en_es-1_0.argosmodel"
-        }
-    }
-}

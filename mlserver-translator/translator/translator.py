@@ -5,10 +5,10 @@ from argostranslate import package, translate
 from mlserver import MLModel, types
 
 
-class TranslationAnnotatorArgos(MLModel):
+class Translator(MLModel):
     async def load(self) -> bool:
         model_uri: str = path.join(
-            "./argos-translation-annotator-en-es",
+            "./argos-translator-en-es",
             self._settings.parameters.extra["argos_translation_model"])
 
         package.install_from_path(model_uri)
@@ -35,7 +35,7 @@ class TranslationAnnotatorArgos(MLModel):
 
             translated_text: str = self.model.translate(data["text_to_translate"])
             outputs.append(types.ResponseOutput(
-                name="translation_annotator",
+                name="argos-translator-en-es",
                 shape=[1],
                 datatype="object",
                 data={
