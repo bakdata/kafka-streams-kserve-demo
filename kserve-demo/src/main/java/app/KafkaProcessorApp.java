@@ -1,13 +1,12 @@
 package app;
 
-
-import client.KFServingClientFactory;
-import client.KFServingClientFactoryV1;
-import client.KFServingClientFactoryV2;
 import com.bakdata.kafka.ErrorCapturingValueMapper;
 import com.bakdata.kafka.KafkaStreamsApplication;
 import com.bakdata.kafka.ProcessedValue;
-import com.bakdata.kafka.ProcessingError;
+import com.bakdata.kserve.client.KFServingClientFactory;
+import com.bakdata.kserve.client.KFServingClientFactoryV1;
+import com.bakdata.kserve.client.KFServingClientFactoryV2;
+import com.bakdata.kserve.predictv2.InferenceRequest;
 import com.google.common.reflect.TypeToken;
 import java.util.Map;
 import java.util.Properties;
@@ -23,8 +22,6 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
 import org.jetbrains.annotations.NotNull;
 import picocli.CommandLine;
-import predictv2.InferenceRequest;
-import predictv2.InferenceResponse;
 import serde.JsonPOJODeserializer;
 import serde.JsonPOJOSerializer;
 import types.ProtocolVersion;

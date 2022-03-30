@@ -3,16 +3,16 @@ package app;
 import java.util.Collection;
 import java.util.List;
 
-import predictv2.InferenceRequest;
-import predictv2.InferenceResponse;
-import predictv2.Parameters;
-import predictv2.RequestInput;
-import predictv2.ResponseOutput;
+import com.bakdata.kserve.predictv2.InferenceRequest;
+import com.bakdata.kserve.predictv2.InferenceResponse;
+import com.bakdata.kserve.predictv2.Parameters;
+import com.bakdata.kserve.predictv2.RequestInput;
+import com.bakdata.kserve.predictv2.ResponseOutput;
 import types.TranslateResponse;
 import types.Translation;
 import types.TextTranslation;
 
-public class App extends KafkaProcessorApp<TextTranslation,TranslateResponse, Translation>{
+public class App extends KafkaProcessorApp<TextTranslation, TranslateResponse, Translation>{
 
     @Override
     protected Translation process(TextTranslation input) {

@@ -1,8 +1,8 @@
 package app;
 
 
-import client.KFServingClient;
-import client.KFServingClientFactory;
+import com.bakdata.kserve.client.KFServingClient;
+import com.bakdata.kserve.client.KFServingClientFactory;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Optional;

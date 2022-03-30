@@ -19,6 +19,7 @@ spec:
           env:
           - name: APP_BROKERS
             value: "k8kafka-cp-kafka-0.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-1.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-2.k8kafka-cp-kafka-headless.infrastructure:9092"
+            # TODO: array input for topics?
           - name: APP_INPUT_TOPICS
             value: to-translate
           - name: APP_OUTPUT_TOPIC

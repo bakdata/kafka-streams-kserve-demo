@@ -12,6 +12,8 @@ spec:
           env:
           - name: KAFKA_SERVER
             value: "k8kafka-cp-kafka-0.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-1.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-2.k8kafka-cp-kafka-headless.infrastructure:9092"
+          # - name: KAFKA_TOPIC
+          #   value: "to-translate"
           - name: TOKEN
             value: "AAAAAAAAAAAAAAAAAAAAAL4PZgEAAAAAD4JQrU6PtJr2kDwniM1DwRei0%2FY%3D7Dy5Dcdqamwper8f5RCkEXvLYKFvxfKUAq6YkfZFiVk3tmNFxl"
           - name: SEARCH
