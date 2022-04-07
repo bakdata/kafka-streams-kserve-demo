@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import types.TextTranslation;
+import types.TextToTranslate;
 
 public class TextProducer {
 
@@ -32,7 +32,7 @@ public class TextProducer {
         props.put("value.serializer",
                 "serde.JsonPOJOSerializer");
 
-        org.apache.kafka.clients.producer.Producer<String, TextTranslation> producer =
+        org.apache.kafka.clients.producer.Producer<String, TextToTranslate> producer =
                 new org.apache.kafka.clients.producer.KafkaProducer<>(props);
 
         List<String> splitted = Arrays.asList(searchString.split(","));
@@ -49,7 +49,7 @@ public class TextProducer {
 
             for (int i = 0; i < result.getData().size(); i++) {
 
-                TextTranslation toTranslate = TextTranslation
+                TextToTranslate toTranslate = TextToTranslate
                         .builder()
                         .textToTranslate(result.getData().get(i).getText())
                         .build();

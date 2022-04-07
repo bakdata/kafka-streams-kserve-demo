@@ -8,17 +8,17 @@ import com.bakdata.kserve.predictv2.InferenceResponse;
 import com.bakdata.kserve.predictv2.Parameters;
 import com.bakdata.kserve.predictv2.RequestInput;
 import com.bakdata.kserve.predictv2.ResponseOutput;
-import types.TranslateResponse;
+import types.TranslatorResponse;
 import types.Translation;
-import types.TextTranslation;
+import types.TextToTranslate;
 
-public class App extends KafkaProcessorApp<TextTranslation, TranslateResponse, Translation>{
+public class App extends KafkaProcessorApp<TextToTranslate, TranslatorResponse, Translation>{
 
     @Override
-    protected Translation process(TextTranslation input) {
-        return this.getRequester().requestInferenceService(InferenceRequest.<TextTranslation, Translation>builder()
+    protected Translation process(TextToTranslate input) {
+        return this.getRequester().requestInferenceService(InferenceRequest.<TextToTranslate, Translation>builder()
                         .inputs(List.of(
-                                RequestInput.<TextTranslation>builder()
+                                RequestInput.<TextToTranslate>builder()
                                         .name("Translation")
                                         .datatype("BYTES")
                                         .shape(List.of(1))

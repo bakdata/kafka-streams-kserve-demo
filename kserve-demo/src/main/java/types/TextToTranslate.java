@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TextTranslation {
+public class TextToTranslate {
     private String textToTranslate;
 }
