@@ -63,11 +63,6 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
                 .to(this.getErrorTopic());
     }
 
-    @Override
-    public String getUniqueAppId() {
-        return "streams-bootstrap-app";
-    }
-
     protected KfServingRequester<InferenceRequest<I, O>, P> createRequester() {
         TypeToken<P> type = new TypeToken<P>(getClass()) {};
         return new KfServingRequester(getProtocolFactory(), this.inferenceService, this.baseEndpoint, this.modelName,

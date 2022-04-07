@@ -44,6 +44,6 @@ public class App extends KafkaProcessorApp<TextTranslation, TranslateResponse, T
 
     @Override
     public String getUniqueAppId() {
-        return "translator-argos";
+        return "kafka-streams-app";
     }
 }

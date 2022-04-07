@@ -10,12 +10,12 @@ spec:
           image:  us.gcr.io/gcp-bakdata-cluster/kserve-demo-text-producer:latest
           imagePullPolicy: Always
           env:
-          - name: KAFKA_SERVER
+          - name: BROKERS
             value: "k8kafka-cp-kafka-0.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-1.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-2.k8kafka-cp-kafka-headless.infrastructure:9092"
-          # - name: KAFKA_TOPIC
-          #   value: "to-translate"
-          - name: TOKEN
-            value: "AAAAAAAAAAAAAAAAAAAAAL4PZgEAAAAAD4JQrU6PtJr2kDwniM1DwRei0%2FY%3D7Dy5Dcdqamwper8f5RCkEXvLYKFvxfKUAq6YkfZFiVk3tmNFxl"
+          - name: KAFKA_TOPIC
+            value: "to-translate"
+          - name: TWITTER_TOKEN
+            value: "placeholder"
           - name: SEARCH
             value: "ukraine war is,putin says,biden says,google says,amazon says,elon musk says,bill gates says,jeff bezos says,europe is,facebook is,instagram is,kafka is,fastapi is,bugs are,crypto is,bitcoin is,ethereum is,doge is,medicine is,nato is,poland is,germany is,oil is,processors are,chips shortage,food shortage,electricity is,AI is,venezuela is,colombia elections,dollar is,euro is,peso is"
           - name: MAX_RESULTS

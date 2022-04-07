@@ -16,15 +16,15 @@ public class TextProducer {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
 
+        String brokers = System.getenv().getOrDefault("BROKERS", "");
         String topicName = System.getenv().getOrDefault("KAFKA_TOPIC", "to-translate");
-        String server = System.getenv().getOrDefault("KAFKA_SERVER", "");
-        String token = System.getenv().getOrDefault("TOKEN", "");
+        String twitterToken = System.getenv().getOrDefault("TWITTER_TOKEN", "");
         String maxResults = System.getenv().getOrDefault("MAX_RESULTS", "50");
         String searchString = System.getenv().getOrDefault("SEARCH", "");
 
         Properties props = new Properties();
 
-        props.put("bootstrap.servers", server);
+        props.put("bootstrap.servers", brokers);
 
         props.put("key.serializer",
                 "org.apache.kafka.common.serialization.StringSerializer");
@@ -32,13 +32,14 @@ public class TextProducer {
         props.put("value.serializer",
                 "serde.JsonPOJOSerializer");
 
-        org.apache.kafka.clients.producer.Producer<String, TextTranslation> producer = new org.apache.kafka.clients.producer.KafkaProducer<String, TextTranslation>(props);
+        org.apache.kafka.clients.producer.Producer<String, TextTranslation> producer =
+                new org.apache.kafka.clients.producer.KafkaProducer<>(props);
 
         List<String> splitted = Arrays.asList(searchString.split(","));
         for (String substring : splitted
         ) {
             TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
-                    .bearerToken(token)
+                    .bearerToken(twitterToken)
                     .build());
 
             TweetList result = twitterClient.searchTweets(substring,
