@@ -9,9 +9,6 @@ import java.util.Optional;
 
 
 public class KfServingRequester<I, O> {
-    private static final String PARAM_INFERENCESERVICE_NAME = "INFERENCESERVICE_NAME";
-    private static final String PARAM_BASE_ENDPOINT = "BASE_ENDPOINT";
-    private static final String PARAM_MODEL_NAME = "MODEL_NAME";
     private static final Duration REQUEST_READ_TIMEOUT =
             Optional.ofNullable(System.getenv("KFSERVING_REQUEST_READ_TIMEOUT"))
                     .map(Integer::parseInt).map(Duration::ofMillis)

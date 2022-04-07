@@ -13,7 +13,7 @@ spec:
       - name: mlserver-translator
         image: us.gcr.io/gcp-bakdata-cluster/kserve-demo-mlserver-translator:latest
         env:
-          - name: MLSERVER_MODEL_PARALLEL_WORKERS
+          - name: MLSERVER_MODEL_PARALLEL_WORKERS  # Disable MLServer parallel inference
             value: "0"
         resources:
           requests:

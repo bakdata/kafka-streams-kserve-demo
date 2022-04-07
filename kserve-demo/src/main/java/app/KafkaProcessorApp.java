@@ -36,8 +36,8 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
     private final JsonPOJODeserializer<O> outputDeserializer = getOutputDynamicDeserializer();
     @CommandLine.Option(names = "--model-name", required = true)
     private String modelName;
-    @CommandLine.Option(names = "--inference-service", required = true)
-    private String inferenceService;
+    @CommandLine.Option(names = "--inference-service-name", required = true)
+    private String inferenceServiceName;
     @CommandLine.Option(names = "--base-endpoint", required = true)
     private String baseEndpoint;
     @CommandLine.Option(names = "--protocol-version", required = true)
@@ -65,7 +65,7 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
 
     protected KfServingRequester<InferenceRequest<I, O>, P> createRequester() {
         TypeToken<P> type = new TypeToken<P>(getClass()) {};
-        return new KfServingRequester(getProtocolFactory(), this.inferenceService, this.baseEndpoint, this.modelName,
+        return new KfServingRequester(getProtocolFactory(), this.inferenceServiceName, this.baseEndpoint, this.modelName,
                 type.getRawType());
     }
 

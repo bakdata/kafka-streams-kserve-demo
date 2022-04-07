@@ -10,18 +10,14 @@ spec:
           image:  us.gcr.io/gcp-bakdata-cluster/kserve-demo-text-producer:latest
           imagePullPolicy: Always
           env:
-          - name: BROKERS
+          - name: BROKERS  # List of Kafka brokers (comma-separated)
             value: "k8kafka-cp-kafka-0.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-1.k8kafka-cp-kafka-headless.infrastructure:9092,k8kafka-cp-kafka-2.k8kafka-cp-kafka-headless.infrastructure:9092"
-          - name: KAFKA_TOPIC
+          - name: KAFKA_TOPIC  # Topic to which texts should be produced
             value: "to-translate"
-          - name: TWITTER_TOKEN
+          - name: TWITTER_TOKEN  # A Twitter API Bearer Token
             value: "placeholder"
-          - name: SEARCH
+          - name: SEARCH  # List of Twitter tweet search terms (comma-separated)
             value: "ukraine war is,putin says,biden says,google says,amazon says,elon musk says,bill gates says,jeff bezos says,europe is,facebook is,instagram is,kafka is,fastapi is,bugs are,crypto is,bitcoin is,ethereum is,doge is,medicine is,nato is,poland is,germany is,oil is,processors are,chips shortage,food shortage,electricity is,AI is,venezuela is,colombia elections,dollar is,euro is,peso is"
-          - name: MAX_RESULTS
+          - name: MAX_RESULTS  # Max number of results returned by the Twitter API per search term
             value: "100"
-          - name: BIG_TEXT
-            value: "false"
-          - name: BIG_TEXT_RESULTS
-            value: "100000"
       restartPolicy: Never
