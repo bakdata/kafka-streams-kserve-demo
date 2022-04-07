@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: text-producer
-          image:  us.gcr.io/gcp-bakdata-cluster/kserve-demo-text-producer:latest
+          image: bakdata/kserve-demo-text-producer:latest
           imagePullPolicy: Always
           env:
           - name: BROKERS  # List of Kafka brokers (comma-separated)

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: kafka-streams-app
-          image:  us.gcr.io/gcp-bakdata-cluster/kserve-demo-kafka-streams-app:latest
+          image: bakdata/kserve-demo-kafka-streams-app:latest
           imagePullPolicy: Always
           env:
           - name: APP_BROKERS  # List of Kafka brokers (comma-separated)

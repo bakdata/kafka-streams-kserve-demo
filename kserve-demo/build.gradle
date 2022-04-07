@@ -41,7 +41,7 @@ test {
 task jibTextProducer {
     doFirst {
         jib.container.mainClass = 'TextProducer'
-        jib.to.image = 'us.gcr.io/gcp-bakdata-cluster/kserve-demo-text-producer'
+        jib.to.image = 'bakdata/kserve-demo-text-producer'
     }
     finalizedBy ':jib'
 }
@@ -49,7 +49,7 @@ task jibTextProducer {
 task jibApp {
     doFirst {
         jib.container.mainClass = 'app.App'
-        jib.to.image = 'us.gcr.io/gcp-bakdata-cluster/kserve-demo-kafka-streams-app'
+        jib.to.image = 'bakdata/kserve-demo-kafka-streams-app'
     }
     finalizedBy ':jib'
 }
