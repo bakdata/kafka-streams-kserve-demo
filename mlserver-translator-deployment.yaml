@@ -4,6 +4,7 @@ metadata:
   name: mlserver-translator
   annotations:
     autoscaling.knative.dev/target: "1"
+    autoscaling.knative.dev/window: "300s"
 spec:
   predictor:
     containerConcurrency: 1
