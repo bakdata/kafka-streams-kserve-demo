@@ -1,10 +1,10 @@
 package types;
 
-import app.KfServingRequester;
+import app.KServeRequester;
 
 public interface IProcessor<I,O> {
 
-    public KfServingRequester<I, O> getRequester();
+    public KServeRequester<I, O> getRequester();
     public O process(I input);
 
 }

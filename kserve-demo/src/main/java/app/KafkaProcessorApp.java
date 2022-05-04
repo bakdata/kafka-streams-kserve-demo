@@ -3,9 +3,9 @@ package app;
 import com.bakdata.kafka.ErrorCapturingValueMapper;
 import com.bakdata.kafka.KafkaStreamsApplication;
 import com.bakdata.kafka.ProcessedValue;
-import com.bakdata.kserve.client.KFServingClientFactory;
-import com.bakdata.kserve.client.KFServingClientFactoryV1;
-import com.bakdata.kserve.client.KFServingClientFactoryV2;
+import com.bakdata.kserve.client.KServeClientFactory;
+import com.bakdata.kserve.client.KServeClientFactoryV1;
+import com.bakdata.kserve.client.KServeClientFactoryV2;
 import com.bakdata.kserve.predictv2.InferenceRequest;
 import com.google.common.reflect.TypeToken;
 import java.util.Map;
@@ -42,7 +42,7 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
     private String baseEndpoint;
     @CommandLine.Option(names = "--protocol-version", required = true)
     private ProtocolVersion protocolVersion;
-    private KfServingRequester<InferenceRequest<I, O>, P> requester;
+    private KServeRequester<InferenceRequest<I, O>, P> requester;
 
     @Override
     public void buildTopology(final StreamsBuilder builder) {
@@ -63,9 +63,9 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
                 .to(this.getErrorTopic());
     }
 
-    protected KfServingRequester<InferenceRequest<I, O>, P> createRequester() {
+    protected KServeRequester<InferenceRequest<I, O>, P> createRequester() {
         TypeToken<P> type = new TypeToken<P>(getClass()) {};
-        return new KfServingRequester(getProtocolFactory(), this.inferenceServiceName, this.baseEndpoint, this.modelName,
+        return new KServeRequester(getProtocolFactory(), this.inferenceServiceName, this.baseEndpoint, this.modelName,
                 type.getRawType());
     }
 
@@ -94,12 +94,12 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
         return deserializer;
     }
 
-    private KFServingClientFactory getProtocolFactory() {
+    private KServeClientFactory getProtocolFactory() {
         switch (this.protocolVersion) {
             case V1:
-                return new KFServingClientFactoryV1();
+                return new KServeClientFactoryV1();
             case V2:
-                return new KFServingClientFactoryV2();
+                return new KServeClientFactoryV2();
             default:
                 throw new RuntimeException("Wrong protocol type given");
         }
