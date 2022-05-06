@@ -16,8 +16,8 @@ public class TextProducer {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
 
-        String brokers = System.getenv().getOrDefault("BROKERS", "");
-        String topicName = System.getenv().getOrDefault("KAFKA_TOPIC", "to-translate");
+        String brokers = System.getenv().getOrDefault("APP_BROKERS", "");
+        String topicName = System.getenv().getOrDefault("APP_OUTPUT_TOPIC", "to-translate");
         String twitterToken = System.getenv().getOrDefault("TWITTER_TOKEN", "");
         String maxResults = System.getenv().getOrDefault("MAX_RESULTS", "50");
         String searchString = System.getenv().getOrDefault("SEARCH", "");
