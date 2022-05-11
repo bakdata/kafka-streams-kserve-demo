@@ -42,7 +42,7 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
     private String baseEndpoint;
     @CommandLine.Option(names = "--protocol-version", required = true)
     private ProtocolVersion protocolVersion;
-    private KServeRequester<InferenceRequest<I, O>, P> requester;
+    private KServeRequester<InferenceRequest<I>, P> requester;
 
     @Override
     public void buildTopology(final StreamsBuilder builder) {
@@ -63,7 +63,7 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
                 .to(this.getErrorTopic());
     }
 
-    protected KServeRequester<InferenceRequest<I, O>, P> createRequester() {
+    protected KServeRequester<InferenceRequest<I>, P> createRequester() {
         TypeToken<P> type = new TypeToken<P>(getClass()) {};
         return new KServeRequester(getProtocolFactory(), this.inferenceServiceName, this.baseEndpoint, this.modelName,
                 type.getRawType());

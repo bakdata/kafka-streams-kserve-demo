@@ -16,7 +16,7 @@ public class App extends KafkaProcessorApp<TextToTranslate, TranslatorResponse, 
 
     @Override
     protected Translation process(TextToTranslate input) {
-        return this.getRequester().requestInferenceService(InferenceRequest.<TextToTranslate, Translation>builder()
+        return this.getRequester().requestInferenceService(InferenceRequest.<TextToTranslate>builder()
                         .inputs(List.of(
                                 RequestInput.<TextToTranslate>builder()
                                         .name("Translation")
