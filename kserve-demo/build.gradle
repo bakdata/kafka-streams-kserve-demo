@@ -40,7 +40,7 @@ test {
 
 task jibTextProducer {
     doFirst {
-        jib.container.mainClass = 'TextProducer'
+        jib.container.mainClass = 'producer.TextProducer'
         jib.to.image = 'bakdata/kserve-demo-text-producer'
     }
     finalizedBy ':jib'

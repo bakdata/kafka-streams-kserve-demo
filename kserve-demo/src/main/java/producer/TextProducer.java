@@ -1,3 +1,5 @@
+package producer;
+
 import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
