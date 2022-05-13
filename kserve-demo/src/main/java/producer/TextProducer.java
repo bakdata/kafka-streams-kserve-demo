@@ -20,9 +20,9 @@ public class TextProducer {
 
         String brokers = System.getenv().getOrDefault("APP_BROKERS", "");
         String topicName = System.getenv().getOrDefault("APP_OUTPUT_TOPIC", "to-translate");
-        String twitterToken = System.getenv().getOrDefault("TWITTER_TOKEN", "");
-        String maxResults = System.getenv().getOrDefault("MAX_RESULTS", "50");
-        String searchString = System.getenv().getOrDefault("SEARCH", "");
+        String twitterToken = System.getenv().getOrDefault("APP_TWITTER_TOKEN", "");
+        String maxResults = System.getenv().getOrDefault("APP_MAX_RESULTS", "50");
+        String searchString = System.getenv().getOrDefault("APP_SEARCH", "");
 
         Properties props = new Properties();
 
