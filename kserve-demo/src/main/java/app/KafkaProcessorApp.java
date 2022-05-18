@@ -34,13 +34,13 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
     private final JsonPOJODeserializer<I> inputDeserializer = getInputDynamicDeserializer();
     private final JsonPOJOSerializer<O> outputSerializer = new JsonPOJOSerializer<O>();
     private final JsonPOJODeserializer<O> outputDeserializer = getOutputDynamicDeserializer();
-    @CommandLine.Option(names = "--model-name", required = true)
+    @CommandLine.Option(names = "--model-name", required = true, description = "The model name as defined in model-settings.json for the custom predictor")
     private String modelName;
-    @CommandLine.Option(names = "--inference-service-name", required = true)
+    @CommandLine.Option(names = "--inference-service-name", required = true, description = "The name of the inference service")
     private String inferenceServiceName;
-    @CommandLine.Option(names = "--base-endpoint", required = true)
+    @CommandLine.Option(names = "--base-endpoint", required = true, description = "The base URL of the KServe inference service namespace. http://{$APP_INFERENCE_SERVICE_NAME}{$APP_BASE_ENDPOINT} should match the URL of the translator inference service")
     private String baseEndpoint;
-    @CommandLine.Option(names = "--protocol-version", required = true)
+    @CommandLine.Option(names = "--protocol-version", required = true, description = "The KServe inference protocol version")
     private ProtocolVersion protocolVersion;
     private KServeRequester<InferenceRequest<I>, P> requester;
 

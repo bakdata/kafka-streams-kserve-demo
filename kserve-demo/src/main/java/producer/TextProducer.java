@@ -4,15 +4,14 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import types.TextToTranslate;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import types.TextToTranslate;
 
 public class TextProducer {
 
@@ -20,8 +19,11 @@ public class TextProducer {
 
         String brokers = System.getenv().getOrDefault("APP_BROKERS", "");
         String topicName = System.getenv().getOrDefault("APP_OUTPUT_TOPIC", "to-translate");
+        // A Twitter API Bearer Token
         String twitterToken = System.getenv().getOrDefault("APP_TWITTER_TOKEN", "");
+        // Max number of results returned by the Twitter API per search term
         String maxResults = System.getenv().getOrDefault("APP_MAX_RESULTS", "50");
+        // List of Twitter tweet search terms (comma-separated)
         String searchString = System.getenv().getOrDefault("APP_SEARCH", "");
 
         Properties props = new Properties();
