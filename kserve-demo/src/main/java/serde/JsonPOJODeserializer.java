@@ -25,39 +25,34 @@
 package serde;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.reflect.TypeToken;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
 public class JsonPOJODeserializer<T> implements Deserializer<T> {
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private Class<T> tClass;
-
-    /**
-     * Default constructor needed by Kafka
-     */
-    public JsonPOJODeserializer() {
-    }
+    private Class<T> tClass = null;
 
 
     @SuppressWarnings("unchecked")
     @Override
-    public void configure(Map<String, ?> props, boolean isKey) {
-        tClass = (Class<T>) props.get("JsonPOJOClass");
+    public void configure(final Map<String, ?> props, final boolean isKey) {
+        this.tClass = (Class<T>) props.get("JsonPOJOClass");
     }
 
+    @Nullable
     @Override
-    public T deserialize(String topic, byte[] bytes) {
+    public T deserialize(final String topic, final byte[] bytes) {
         if (bytes == null)
             return null;
 
-        T data;
+        final T data;
         try {
-            data = objectMapper.readValue(bytes, tClass);
-        } catch (Exception e) {
+            data = this.objectMapper.readValue(bytes, this.tClass);
+        } catch (final Exception e) {
             throw new SerializationException(e);
         }
 
@@ -65,7 +60,5 @@ public class JsonPOJODeserializer<T> implements Deserializer<T> {
     }
 
     @Override
-    public void close() {
-
-    }
+    public void close() {}
 }

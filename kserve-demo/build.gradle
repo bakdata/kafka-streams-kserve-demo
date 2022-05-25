@@ -1,5 +1,3 @@
-description = "A demo for using Kafka Streams with KServe for machine learning inference"
-
 plugins {
     id 'java'
     id 'io.freefair.lombok' version '5.3.3.3'
@@ -9,36 +7,22 @@ plugins {
 group 'com.bakdata.kserve'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.11
+description = "A demo for using Kafka Streams with KServe for machine learning inference"
 
 repositories {
     mavenCentral()
     maven { url = "https://packages.confluent.io/maven/" }
-
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    implementation group: "io.confluent", name: "kafka-streams-avro-serde", version: "6.2.0"
     implementation group: "com.bakdata.kafka", name: "streams-bootstrap", version: "1.9.3"
-    implementation group: "org.jsoup", name: "jsoup", version: "1.13.1"
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.5'
-    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.1'
-    implementation group: 'org.json', name: 'json', version: '20211205'
-    implementation group: 'com.bakdata.kafka', name : 'error-handling', version : '1.1.0'
-    implementation group: 'info.picocli', name : 'picocli', version : '4.6.1'
-    implementation group: 'io.github.resilience4j', name: 'resilience4j-retry', version: '1.7.1'
-    implementation group: 'com.bakdata.kserve', name : 'kserve-client', version : '0.0.1-SNAPSHOT'
-    implementation("com.google.guava:guava:31.0.1-jre")
-    implementation("io.github.redouane59.twitter:twittered:2.15")
-
-    def fluentKafkaVersion = "2.4.2"
-    testImplementation group: "com.bakdata.fluent-kafka-streams-tests", name: "fluent-kafka-streams-tests-junit5", version: fluentKafkaVersion
-    testImplementation group: "com.bakdata.fluent-kafka-streams-tests", name: "schema-registry-mock-junit5", version: fluentKafkaVersion
-}
-
-test {
-    useJUnitPlatform()
+    implementation group: 'com.bakdata.kafka', name: 'error-handling', version: '1.1.0'
+    implementation group: 'info.picocli', name: 'picocli', version: '4.6.1'
+    implementation group: 'com.bakdata.kserve', name: 'kserve-client', version: '0.0.1-SNAPSHOT'
+    implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
+    implementation group: 'io.github.redouane59.twitter', name: 'twittered', version: '2.15'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '16.0.2'
 }
 
 task jibTextProducer {

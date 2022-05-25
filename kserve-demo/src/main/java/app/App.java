@@ -24,22 +24,22 @@
 
 package app;
 
-import java.util.Collection;
-import java.util.List;
-
 import com.bakdata.kserve.predictv2.InferenceRequest;
 import com.bakdata.kserve.predictv2.InferenceResponse;
 import com.bakdata.kserve.predictv2.Parameters;
 import com.bakdata.kserve.predictv2.RequestInput;
 import com.bakdata.kserve.predictv2.ResponseOutput;
-import types.TranslatorResponse;
-import types.Translation;
 import types.TextToTranslate;
+import types.Translation;
+import types.TranslatorResponse;
+
+import java.util.Collection;
+import java.util.List;
 
 public class App extends KafkaProcessorApp<TextToTranslate, TranslatorResponse, Translation>{
 
     @Override
-    protected Translation process(TextToTranslate input) {
+    protected Translation process(final TextToTranslate input) {
         return this.getRequester().requestInferenceService(InferenceRequest.<TextToTranslate>builder()
                         .inputs(List.of(
                                 RequestInput.<TextToTranslate>builder()
@@ -62,7 +62,7 @@ public class App extends KafkaProcessorApp<TextToTranslate, TranslatorResponse, 
                 .orElseThrow();
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         startApplication(new App(), args);
     }
 

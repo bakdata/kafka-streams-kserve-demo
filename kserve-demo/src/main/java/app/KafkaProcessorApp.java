@@ -32,8 +32,6 @@ import com.bakdata.kserve.client.KServeClientFactoryV1;
 import com.bakdata.kserve.client.KServeClientFactoryV2;
 import com.bakdata.kserve.predictv2.InferenceRequest;
 import com.google.common.reflect.TypeToken;
-import java.util.Map;
-import java.util.Properties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.kafka.common.serialization.Serde;
@@ -50,14 +48,17 @@ import serde.JsonPOJODeserializer;
 import serde.JsonPOJOSerializer;
 import types.ProtocolVersion;
 
+import java.util.Map;
+import java.util.Properties;
+
 @Getter
 @NoArgsConstructor
 public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication {
 
     private final JsonPOJOSerializer<I> inputSerializer = new JsonPOJOSerializer<I>();
-    private final JsonPOJODeserializer<I> inputDeserializer = getInputDynamicDeserializer();
+    private final JsonPOJODeserializer<I> inputDeserializer = this.getInputDynamicDeserializer();
     private final JsonPOJOSerializer<O> outputSerializer = new JsonPOJOSerializer<O>();
-    private final JsonPOJODeserializer<O> outputDeserializer = getOutputDynamicDeserializer();
+    private final JsonPOJODeserializer<O> outputDeserializer = this.getOutputDynamicDeserializer();
     @CommandLine.Option(names = "--model-name", required = true, description = "The model name as defined in model-settings.json for the custom predictor")
     private String modelName;
     @CommandLine.Option(names = "--inference-service-name", required = true, description = "The name of the inference service")
@@ -66,19 +67,19 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
     private String baseEndpoint;
     @CommandLine.Option(names = "--protocol-version", required = true, description = "The KServe inference protocol version")
     private ProtocolVersion protocolVersion;
-    private KServeRequester<InferenceRequest<I>, P> requester;
+    private KServeRequester<InferenceRequest<I>, P> requester = null;
 
     @Override
     public void buildTopology(final StreamsBuilder builder) {
-        Serde<I> inputSerde = getInputSerde();
+        final Serde<I> inputSerde = this.getInputSerde();
         final KStream<byte[], I> input =
-                builder.<byte[], I>stream(this.getInputTopics(),
+                builder.stream(this.getInputTopics(),
                         Consumed.with(Serdes.ByteArray(), inputSerde));
 
-        KStream<byte[], ProcessedValue<I, O>> processedValues =
+        final KStream<byte[], ProcessedValue<I, O>> processedValues =
                 input.mapValues(ErrorCapturingValueMapper.captureErrors(this::process));
 
-        Serde<O> outputSerde = getOutputSerde();
+        final Serde<O> outputSerde = this.getOutputSerde();
         processedValues.flatMapValues(ProcessedValue::getValues)
                 .to(this.getOutputTopic(), Produced.with(Serdes.ByteArray(), outputSerde));
 
@@ -88,32 +89,32 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
     }
 
     protected KServeRequester<InferenceRequest<I>, P> createRequester() {
-        TypeToken<P> type = new TypeToken<P>(getClass()) {};
-        return new KServeRequester(getProtocolFactory(), this.inferenceServiceName, this.baseEndpoint, this.modelName,
+        final TypeToken<P> type = new TypeToken<P>(this.getClass()) {};
+        return new KServeRequester(this.getProtocolFactory(), this.inferenceServiceName, this.baseEndpoint, this.modelName,
                 type.getRawType());
     }
 
-    abstract protected O process(I input);
+    protected abstract O process(I input);
 
     // Optionally you can override the default streams bootstrap Kafka properties
     @Override
     protected Properties createKafkaProperties() {
-        this.requester = createRequester();
+        this.requester = this.createRequester();
         final Properties kafkaProperties = super.createKafkaProperties();
         kafkaProperties.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, ByteArraySerde.class);
         return kafkaProperties;
     }
 
     private JsonPOJODeserializer<I> getInputDynamicDeserializer() {
-        TypeToken<I> type = new TypeToken<I>(getClass()) {};
-        JsonPOJODeserializer<I> deserializer = new JsonPOJODeserializer<>();
+        final TypeToken<I> type = new TypeToken<I>(this.getClass()) {};
+        final JsonPOJODeserializer<I> deserializer = new JsonPOJODeserializer<>();
         deserializer.configure(Map.of("JsonPOJOClass", (Class<I>) type.getRawType()), false);
         return deserializer;
     }
 
     private JsonPOJODeserializer<O> getOutputDynamicDeserializer() {
-        TypeToken<O> type = new TypeToken<O>(getClass()) {};
-        JsonPOJODeserializer<O> deserializer = new JsonPOJODeserializer<>();
+        final TypeToken<O> type = new TypeToken<O>(this.getClass()) {};
+        final JsonPOJODeserializer<O> deserializer = new JsonPOJODeserializer<>();
         deserializer.configure(Map.of("JsonPOJOClass", (Class<O>) type.getRawType()), false);
         return deserializer;
     }
@@ -131,13 +132,12 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
 
     @NotNull
     private Serde<O> getOutputSerde() {
-        return Serdes.serdeFrom(outputSerializer, outputDeserializer);
+        return Serdes.serdeFrom(this.outputSerializer, this.outputDeserializer);
     }
 
     @NotNull
     private Serde<I> getInputSerde() {
-        return Serdes.serdeFrom(inputSerializer, inputDeserializer);
+        return Serdes.serdeFrom(this.inputSerializer, this.inputDeserializer);
     }
-
 
 }

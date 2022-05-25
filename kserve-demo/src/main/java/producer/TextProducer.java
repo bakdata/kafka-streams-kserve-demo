@@ -28,29 +28,32 @@ import io.github.redouane59.twitter.TwitterClient;
 import io.github.redouane59.twitter.dto.endpoints.AdditionalParameters;
 import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import types.TextToTranslate;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
-public class TextProducer {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class TextProducer {
 
-    public static void main(String[] args) throws URISyntaxException, IOException {
+    public static void main(final String[] args) throws URISyntaxException, IOException {
 
-        String brokers = System.getenv().getOrDefault("APP_BROKERS", "");
-        String topicName = System.getenv().getOrDefault("APP_OUTPUT_TOPIC", "to-translate");
+        final String brokers = System.getenv().getOrDefault("APP_BROKERS", "");
+        final String topicName = System.getenv().getOrDefault("APP_OUTPUT_TOPIC", "to-translate");
         // A Twitter API Bearer Token
-        String twitterToken = System.getenv().getOrDefault("APP_TWITTER_TOKEN", "");
+        final String twitterToken = System.getenv().getOrDefault("APP_TWITTER_TOKEN", "");
         // Max number of results returned by the Twitter API per search term
-        String maxResults = System.getenv().getOrDefault("APP_MAX_RESULTS", "50");
+        final int maxResults = Integer.parseInt(System.getenv().getOrDefault("APP_MAX_RESULTS", "50"));
         // List of Twitter tweet search terms (comma-separated)
-        String searchString = System.getenv().getOrDefault("APP_SEARCH", "");
+        final String searchString = System.getenv().getOrDefault("APP_SEARCH", "");
 
-        Properties props = new Properties();
+        final Properties props = new Properties();
 
         props.put("bootstrap.servers", brokers);
 
@@ -60,24 +63,26 @@ public class TextProducer {
         props.put("value.serializer",
                 "serde.JsonPOJOSerializer");
 
-        org.apache.kafka.clients.producer.Producer<String, TextToTranslate> producer =
-                new org.apache.kafka.clients.producer.KafkaProducer<>(props);
+        final Producer<String, TextToTranslate> producer =
+                new KafkaProducer<>(props);
 
-        List<String> splitted = Arrays.asList(searchString.split(","));
-        for (String substring : splitted
-        ) {
-            TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
-                    .bearerToken(twitterToken)
-                    .build());
+        final TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
+                .bearerToken(twitterToken)
+                .build());
+        final AdditionalParameters twitterSearchParams = AdditionalParameters.builder()
+                .recursiveCall(false)
+                .maxResults(maxResults)
+                .build();
 
-            TweetList result = twitterClient.searchTweets(substring,
-                    AdditionalParameters.builder()
-                            .recursiveCall(false)
-                            .maxResults(Integer.parseInt(maxResults)).build());
+        final String[] splitted = searchString.split(",");
+
+        for (final String substring : splitted) {
+
+            final TweetList result = twitterClient.searchTweets(substring, twitterSearchParams);
 
             for (int i = 0; i < result.getData().size(); i++) {
 
-                TextToTranslate toTranslate = TextToTranslate
+                final TextToTranslate toTranslate = TextToTranslate
                         .builder()
                         .textToTranslate(result.getData().get(i).getText())
                         .build();

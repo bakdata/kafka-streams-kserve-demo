@@ -27,6 +27,7 @@ package app;
 
 import com.bakdata.kserve.client.KServeClient;
 import com.bakdata.kserve.client.KServeClientFactory;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Optional;
@@ -70,16 +71,11 @@ public class KServeRequester<I, O> {
     }
 
     protected Optional<O> requestInferenceService(final I jsonObject) {
-        return this.requestInferenceService(jsonObject, "");
-    }
-
-    protected Optional<O> requestInferenceService(final I jsonObject, final String modelNameSuffix) {
         try {
-            return this.kServeClient.makeInferenceRequest(jsonObject, this.type, modelNameSuffix);
+            return this.kServeClient.makeInferenceRequest(jsonObject, this.type, "");
         } catch (final IOException e) {
             throw new IllegalArgumentException(
                     "Error occurred when sending or receiving the inference request/response", e);
         }
     }
-
 }
