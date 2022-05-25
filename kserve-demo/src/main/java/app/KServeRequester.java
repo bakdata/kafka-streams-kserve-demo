@@ -52,7 +52,8 @@ public class KServeRequester<I, O> {
                 String.format("%s%s", inferenceServiceName, baseEndpoint),
                 modelName,
                 REQUEST_READ_TIMEOUT.compareTo(requestReadTimeout) > 0 ?
-                        REQUEST_READ_TIMEOUT : requestReadTimeout);
+                        REQUEST_READ_TIMEOUT : requestReadTimeout,
+                false);
     }
 
     protected KServeRequester(
@@ -78,9 +79,6 @@ public class KServeRequester<I, O> {
         } catch (final IOException e) {
             throw new IllegalArgumentException(
                     "Error occurred when sending or receiving the inference request/response", e);
-        } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalArgumentException("The operation was interrupted", e);
         }
     }
 
