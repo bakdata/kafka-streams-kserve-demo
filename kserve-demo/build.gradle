@@ -1,10 +1,12 @@
+description = "A demo for using Kafka Streams with KServe for machine learning inference"
+
 plugins {
     id 'java'
     id 'io.freefair.lombok' version '5.3.3.3'
     id 'com.google.cloud.tools.jib' version '3.1.4'
 }
 
-group 'com.example.kafkakserve'
+group 'com.bakdata.kserve'
 version '1.0-SNAPSHOT'
 sourceCompatibility = 1.11
 
@@ -26,6 +28,7 @@ dependencies {
     implementation group: 'com.bakdata.kafka', name : 'error-handling', version : '1.1.0'
     implementation group: 'info.picocli', name : 'picocli', version : '4.6.1'
     implementation group: 'io.github.resilience4j', name: 'resilience4j-retry', version: '1.7.1'
+    implementation group: 'com.bakdata.kserve', name : 'kserve-client', version : '0.0.1-SNAPSHOT'
     implementation("com.google.guava:guava:31.0.1-jre")
     implementation("io.github.redouane59.twitter:twittered:2.15")
 
