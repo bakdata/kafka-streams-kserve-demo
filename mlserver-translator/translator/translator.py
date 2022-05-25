@@ -3,13 +3,12 @@ from typing import List, Dict
 
 from argostranslate import package, translate
 from mlserver import MLModel, types
+from mlserver.utils import get_model_uri
 
 
 class Translator(MLModel):
     async def load(self) -> bool:
-        model_uri: str = path.join(
-            "./argos-translator-en-es",
-            self._settings.parameters.extra["argos_translation_model"])
+        model_uri: str = await get_model_uri(self.settings)
 
         package.install_from_path(model_uri)
         [target_language] = list(filter(

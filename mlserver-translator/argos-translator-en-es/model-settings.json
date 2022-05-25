@@ -2,8 +2,6 @@
     "name": "argos-translator-en-es",
     "implementation": "translator.translator.Translator",
     "parameters": {
-        "extra": {
-            "argos_translation_model": "translate-en_es-1_0.argosmodel"
-        }
+        "uri": "./model.argosmodel"
     }
 }
