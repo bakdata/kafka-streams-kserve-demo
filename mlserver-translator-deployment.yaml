@@ -16,6 +16,8 @@ spec:
         env:
           - name: MLSERVER_MODEL_PARALLEL_WORKERS  # Disable MLServer parallel inference
             value: "0"
+          - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION  # Workaround until https://github.com/SeldonIO/MLServer/issues/615 is fixed
+            value: python
         resources:
           requests:
             memory: 1G
