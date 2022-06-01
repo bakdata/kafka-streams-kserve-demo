@@ -68,6 +68,6 @@ public class App extends KafkaProcessorApp<TextToTranslate, TranslatorResponse, 
 
     @Override
     public String getUniqueAppId() {
-        return "kafka-streams-app";
+        return "kafka-streams-translator";
     }
 }

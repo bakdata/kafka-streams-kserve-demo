@@ -24,6 +24,7 @@
 
 package app;
 
+import com.bakdata.kafka.DeadLetterTransformer;
 import com.bakdata.kafka.ErrorCapturingValueMapper;
 import com.bakdata.kafka.KafkaStreamsApplication;
 import com.bakdata.kafka.ProcessedValue;
@@ -84,7 +85,7 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
                 .to(this.getOutputTopic(), Produced.with(Serdes.ByteArray(), outputSerde));
 
         processedValues.flatMapValues(ProcessedValue::getErrors)
-                .mapValues(x -> x.createDeadLetter("Error in infer"))
+                .transformValues(DeadLetterTransformer.createDeadLetter("Error in infer"))
                 .to(this.getErrorTopic());
     }
 
@@ -126,7 +127,10 @@ public abstract class KafkaProcessorApp<I, P, O> extends KafkaStreamsApplication
             case V2:
                 return new KServeClientFactoryV2();
             default:
-                throw new RuntimeException("Wrong protocol type given");
+                throw new RuntimeException(String.format(
+                        "Unsupported protocol type '%s' given, should be one of '%s', '%s'",
+                        this.protocolVersion, ProtocolVersion.V1, ProtocolVersion.V2
+                ));
         }
     }
 

@@ -15,9 +15,9 @@ repositories {
 }
 
 dependencies {
-    implementation group: "com.bakdata.kafka", name: "streams-bootstrap", version: "1.9.3"
+    implementation group: "com.bakdata.kafka", name: "streams-bootstrap", version: "2.1.1"
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.5'
-    implementation group: 'com.bakdata.kafka', name: 'error-handling', version: '1.1.0'
+    implementation group: 'com.bakdata.kafka', name: 'error-handling', version: '1.2.4'
     implementation group: 'info.picocli', name: 'picocli', version: '4.6.1'
     implementation group: 'com.bakdata.kserve', name: 'kserve-client', version: '0.0.1-SNAPSHOT'
     implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'

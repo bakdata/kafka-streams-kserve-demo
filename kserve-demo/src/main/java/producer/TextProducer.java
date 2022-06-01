@@ -30,6 +30,7 @@ import io.github.redouane59.twitter.dto.tweet.TweetList;
 import io.github.redouane59.twitter.signature.TwitterCredentials;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TextProducer {
 
@@ -63,9 +65,6 @@ public final class TextProducer {
         props.put("value.serializer",
                 "serde.JsonPOJOSerializer");
 
-        final Producer<String, TextToTranslate> producer =
-                new KafkaProducer<>(props);
-
         final TwitterClient twitterClient = new TwitterClient(TwitterCredentials.builder()
                 .bearerToken(twitterToken)
                 .build());
@@ -76,23 +75,21 @@ public final class TextProducer {
 
         final String[] splitted = searchString.split(",");
 
-        for (final String substring : splitted) {
+        try (final Producer<String, TextToTranslate> producer = new KafkaProducer<>(props)) {
+            for (final String substring : splitted) {
+                final TweetList result = twitterClient.searchTweets(substring, twitterSearchParams);
 
-            final TweetList result = twitterClient.searchTweets(substring, twitterSearchParams);
-
-            for (int i = 0; i < result.getData().size(); i++) {
-
-                final TextToTranslate toTranslate = TextToTranslate
-                        .builder()
-                        .textToTranslate(result.getData().get(i).getText())
-                        .build();
-
-                producer.send(new ProducerRecord<>(topicName,
-                        Integer.toString(i), toTranslate));
+                for (int i = 0; i < result.getData().size(); i++) {
+                    final TextToTranslate toTranslate = TextToTranslate
+                            .builder()
+                            .textToTranslate(result.getData().get(i).getText())
+                            .build();
+                    producer.send(new ProducerRecord<>(topicName,
+                            Integer.toString(i), toTranslate));
+                }
             }
-        }
 
-        System.out.println("Messages sent successfully");
-        producer.close();
+            log.info("Messages sent successfully");
+        }
     }
 }
