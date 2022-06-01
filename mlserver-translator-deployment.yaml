@@ -1,0 +1,27 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: mlserver-translator
+  annotations:
+    autoscaling.knative.dev/target: "1"
+    autoscaling.knative.dev/window: "300s"
+spec:
+  predictor:
+    containerConcurrency: 1
+    maxReplicas: 5
+    minReplicas: 0
+    containers:
+      - name: mlserver-translator
+        image: bakdata/kserve-demo-mlserver-translator:latest
+        env:
+          - name: MLSERVER_MODEL_PARALLEL_WORKERS  # Disable MLServer parallel inference
+            value: "0"
+          - name: PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION  # Workaround until https://github.com/SeldonIO/MLServer/issues/615 is fixed
+            value: python
+        resources:
+          requests:
+            memory: 1G
+            cpu: "1"
+          limits:
+            memory: 2G
+            cpu: "1"

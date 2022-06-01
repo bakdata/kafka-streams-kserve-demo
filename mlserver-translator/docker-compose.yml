@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  mlserver:
+    build:
+      context: .
+    ports:
+    - "8080:8080"
+    environment:
+      MLSERVER_MODEL_PARALLEL_WORKERS: 0

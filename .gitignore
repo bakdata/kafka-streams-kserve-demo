@@ -1,0 +1,9 @@
+mlserver-translator/.idea
+kserve-demo/.idea
+*.pyc
+.*
+!.gitignore
+!.gitmodules
+kserve-demo/build/
+kserve-demo/out/
+kserve-demo/bin/
