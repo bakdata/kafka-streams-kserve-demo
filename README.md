@@ -1,6 +1,6 @@
 # kafka-streams-kserve-demo
 
-A demo to accompany our blogpost about [Scalable Machine Learning with Kafka Streams and KServe](https://medium.com/bakdata/xyz). More information on how to run the demo can be found in the blogpost.
+A demo to accompany our blogpost about [Scalable Machine Learning with Kafka Streams and KServe](https://medium.com/bakdata/scalable-machine-learning-with-kafka-streams-and-kserve-85308858d867). More information on how to run the demo can be found in the blogpost.
 
 The three Docker images for the demo have been published on the [bakdata Docker Hub page](https://hub.docker.com/u/bakdata). They are automatically pulled if you follow the setup instructions in the blogpost.
 
